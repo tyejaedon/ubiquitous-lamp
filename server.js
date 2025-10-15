@@ -30,7 +30,6 @@ function getTokenFromHeader(req) {
   return null; // No valid token found
 }
 
-const rooturl = process.env.ROOT_URL || 'https://tyjaedon.me';
 
 
 
@@ -52,7 +51,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.get(`${rooturl}/api/auth/check-token`, (req, res) => {
+app.get("/api/auth/check-token", (req, res) => {
   const token = req.headers.authorization?.split(" ")[1]; // Extract token
 
   if (!token) {
@@ -192,7 +191,7 @@ pool.on("error", (err) => {
   });
 
 // ✅ Sample Route
-app.get(`${rooturl}/api`, (req, res) => {
+app.get("/api", (req, res) => {
   res.send("CMI Donation API is Running 🚀");
 });
 
@@ -207,7 +206,7 @@ const checkEmailExists = (email) => {
     });
   };
 // ✅ SIGNUP Route
-app.post(`${rooturl}/api/signup`, async (req, res) => {
+app.post("/api/signup", async (req, res) => {
     const { firstName, lastName, email, phone, password } = req.body;
   
     try {
@@ -264,8 +263,8 @@ app.post(`${rooturl}/api/signup`, async (req, res) => {
   });
   
 //login
-
-app.post(`${rooturl}/api/login`, async (req, res) => {
+  
+app.post("/api/login", async (req, res) => {
     const { email, password } = req.body;
   
     const sql = "SELECT id, first_name, last_name, email, role, password FROM User WHERE email = ?";
@@ -314,7 +313,7 @@ app.post(`${rooturl}/api/login`, async (req, res) => {
   
   
   //profile 
-  app.get(`${rooturl}/api/profile`, authenticateToken, async (req, res) => {
+  app.get("/api/profile", authenticateToken, async (req, res) => {
     const userId = getUserIdFromToken(req);
     const userSql = "SELECT * FROM User WHERE id = ?";
     const profileSql = "SELECT * FROM profile WHERE user_id = ?";
@@ -344,7 +343,7 @@ app.post(`${rooturl}/api/login`, async (req, res) => {
 
             let profile = profileResults[0];
             if (profile.profile_image !==  null){
-              profile.profile_image = rooturl + profile.profile_image;
+              profile.profile_image = 'http://localhost:5000' + profile.profile_image;
             }
            
 
@@ -370,7 +369,7 @@ app.post(`${rooturl}/api/login`, async (req, res) => {
 
 
 
-app.post(`${rooturl}/api/profile/update`, authenticateToken, upload.single('profilePhoto'), (req, res) => {
+app.post("/api/profile/update", authenticateToken, upload.single('profilePhoto'), (req, res) => {
   const userId = getUserIdFromToken(req);
 const jsonData = req.body.jsonData ? JSON.parse(req.body.jsonData) : null;
 let  firstName, lastName, phone;
@@ -455,7 +454,7 @@ Promise.any([promise1, promise2])
 }
 
 );
-app.get(`${rooturl}/api/organisations`, (req, res) => {
+app.get('/api/organisations', (req, res) => {
   pool.query('SELECT * FROM organisation', (err, results) => {
       if (err) {
           return res.status(500).json({ message: 'Error fetching organisations', error: err });
@@ -463,7 +462,7 @@ app.get(`${rooturl}/api/organisations`, (req, res) => {
       res.json(results);
   });
 });
-app.post(`${rooturl}/api/organisations`, checkAdmin, upload.single('org_photo'), (req, res) => {
+app.post('/api/organisations', checkAdmin, upload.single('org_photo'), (req, res) => {
   let name, usage_of_funds, amount_raised, summary;
   const jsonData = req.body.jsonData ? JSON.parse(req.body.jsonData) : null;
 
@@ -490,7 +489,7 @@ app.post(`${rooturl}/api/organisations`, checkAdmin, upload.single('org_photo'),
   });
 });
 
-app.put(`${rooturl}/api/organisations/:id`, checkAdmin, upload.single('org_photo'), (req, res) => {
+app.put('/api/organisations/:id', checkAdmin, upload.single('org_photo'), (req, res) => {
   const { id } = req.params;
   let name, usage_of_funds, amount_raised, summary;
   
@@ -518,7 +517,7 @@ app.put(`${rooturl}/api/organisations/:id`, checkAdmin, upload.single('org_photo
       res.json({ message: 'Organisation updated successfully' });
   });
 });
-app.delete(`${rooturl}/api/organisations/:id`, checkAdmin, (req, res) => {
+app.delete('/api/organisations/:id', checkAdmin, (req, res) => {
   const { id } = req.body;
 
   const query = 'DELETE FROM organisation WHERE id = ?';
@@ -531,7 +530,7 @@ app.delete(`${rooturl}/api/organisations/:id`, checkAdmin, (req, res) => {
 });
 
 
-app.get(`${rooturl}/api/cmi`, (req, res) => {
+app.get('/api/cmi', (req, res) => {
   pool.query('SELECT * FROM cmi', (err, results) => {
       if (err) {
           console.error('Error fetching CMI records:', err);
@@ -540,7 +539,7 @@ app.get(`${rooturl}/api/cmi`, (req, res) => {
       res.json(results);
   });
 });
-app.get(`${rooturl}/api/donation-progress`, async (req, res) => {
+app.get("/api/donation-progress", async (req, res) => {
   try {
     const query = `SELECT donation_total, goal FROM cmi LIMIT 1;`;
     pool.query(query, (err, results) => {
@@ -562,7 +561,7 @@ app.get(`${rooturl}/api/donation-progress`, async (req, res) => {
 
 
 // Route to add a new CMI record
-app.post(`${rooturl}/api/cmi`, (req, res) => {
+app.post('/api/cmi', (req, res) => {
   const { mpesa_info, donation_total, goal } = req.body;
   const query = 'INSERT INTO cmi (mpesa_info, donation_total, goal, created_at) VALUES (?, ?, ?, NOW())';
   pool.query(query, [mpesa_info, donation_total, goal], (err, result) => {
@@ -575,7 +574,7 @@ app.post(`${rooturl}/api/cmi`, (req, res) => {
 });
 
 // Route to delete a CMI record by ID
-app.put(`${rooturl}/api/cmi/:id`, (req, res) => {
+app.put('/api/cmi/:id', (req, res) => {
   const { id } = req.params;
   const { donation_total, goal } = req.body;
 
@@ -598,7 +597,7 @@ app.put(`${rooturl}/api/cmi/:id`, (req, res) => {
 
 
 // POST API to add a donation
-app.post(`${rooturl}/api/donate`, (req, res) => {
+app.post("/api/donate", (req, res) => {
   let { user_id, organization_id, amount } = req.body;
 
   if (!organization_id || !amount) {
@@ -623,7 +622,7 @@ app.post(`${rooturl}/api/donate`, (req, res) => {
 
 
 
-app.get(`${rooturl}/api/user`, authenticateToken, (req, res) => {
+app.get("/api/user",authenticateToken ,(req, res) => {
   const userId = getUserIdFromToken(req);
 
   if (!userId) {
@@ -646,7 +645,7 @@ app.get(`${rooturl}/api/user`, authenticateToken, (req, res) => {
   });
 });
 
-app.get(`${rooturl}/api/donations`, authenticateToken, (req, res) => {
+app.get("/api/donations",authenticateToken, (req, res) => {
   const user_id  = getUserIdFromToken(req);
   console.log(user_id);
   if (!user_id) {
@@ -672,7 +671,7 @@ app.get(`${rooturl}/api/donations`, authenticateToken, (req, res) => {
   });
 });
 // GET: Fetch all donations (Admin only)
-app.get(`${rooturl}/api/admin/donations`, checkAdmin, (req, res) => {
+app.get("/api/admin/donations", checkAdmin, (req, res) => {
 
 
   const query = `
@@ -695,7 +694,7 @@ app.get(`${rooturl}/api/admin/donations`, checkAdmin, (req, res) => {
 });
 
 // POST: Update donation status (Admin only)
-app.post(`${rooturl}/api/admin/donations`, checkAdmin, (req, res) => {
+app.post("/api/admin/donations", checkAdmin, (req, res) => {
  
 
   const { donation_id, status } = req.body;
@@ -715,7 +714,7 @@ app.post(`${rooturl}/api/admin/donations`, checkAdmin, (req, res) => {
   });
 });
 
-app.post(`${rooturl}/api/admin/update-donations`, checkAdmin, (req, res) => {
+app.post("/api/admin/update-donations", checkAdmin, (req, res) => {
   const query = `
     UPDATE organisation o
     JOIN (
