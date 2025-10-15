@@ -34,13 +34,13 @@ const AdminDashboard = () => {
  
     // Fetch all CMI and Organisation records
     useEffect(() => {
-        axios.get("/api/cmi")
+        axios.get("https://tyjaedon.me/api/cmi")
             .then((response) => {
                 setCmiData(response.data);
             })
             .catch((error) => console.error("There was an error fetching CMI records", error));
 
-        axios.get("/api/organisations")
+        axios.get("https://tyjaedon.me/api/organisations")
             .then((response) => {
                 setOrganisationData(response.data);
             })
@@ -77,7 +77,7 @@ const AdminDashboard = () => {
         formData.append("org_photo", newEvent.event_image);
         formData.append("jsonData", JSON.stringify(newEvent));
 
-        axios.post("/api/organisations", formData, 
+        axios.post("https://tyjaedon.me/api/organisations", formData, 
         { headers: 
     {   Authorization: `Bearer ${token}`},
             credentials: "include", })
@@ -85,19 +85,19 @@ const AdminDashboard = () => {
                 alert(response.data.message);
                 setNewEvent({ name: "", usage_of_funds: "", amount_raised: 0, summary: "", event_image: null });
                 // Reload the Organisation data
-                axios.get("/api/organisations").then((res) => setOrganisationData(res.data));
+                axios.get("https://tyjaedon.me/api/organisations").then((res) => setOrganisationData(res.data));
             })
             .catch((error) =>{
                 setError("There was an error adding the event.");
                  console.error("Error adding event", error)});
     };
    const handleAddRecord = () => {
-    axios.post("/api/cmi", newCmi)
+    axios.post("https://tyjaedon.me/api/cmi", newCmi)
         .then((response) => {
             alert(response.data.message);
             setNewCmi({ mpesa_info: "", donation_total: 0, goal: 0 });
             // Reload the CMI data
-            axios.get("/api/cmi")
+            axios.get("https://tyjaedon.me/api/cmi")
                 .then((res) => setCmiData(res.data))
                 .catch((error) => console.error("Error fetching CMI records", error));
         })
@@ -107,11 +107,11 @@ const AdminDashboard = () => {
         });
 };
 const handleDeleteRecord = (id) => {
-    axios.delete(`/api/organisations/${id}`, { headers: { Authorization: `Bearer ${token}` } })
+    axios.delete(`https://tyjaedon.me/api/organisations/${id}`, { headers: { Authorization: `Bearer ${token}` } })
         .then((response) => {
             alert(response.data.message);
             // Reload the Organisation data
-            axios.get("/api/organisations").then((res) => setOrganisationData(res.data));
+            axios.get("https://tyjaedon.me/api/organisations").then((res) => setOrganisationData(res.data));
         })
         .catch((error) => {
             setError("There was an error deleting the event.");
@@ -139,12 +139,12 @@ const handleUpdateEvent = () => {
     formData.append("org_photo", newEvent.event_image);
     formData.append("jsonData", JSON.stringify(newEvent)); // Ensure JSON data is passed correctly
 
-    axios.put(`/api/organisations/${editingEvent.id}`, formData, { headers: { "Content-Type": "multipart/form-data" , Authorization: `Bearer ${token}`, },
+    axios.put(`https://tyjaedon.me/api/organisations/${editingEvent.id}`, formData, { headers: { "Content-Type": "multipart/form-data" , Authorization: `Bearer ${token}`, },
         credentials: "include" })
         .then((response) => {
             alert(response.data.message);
             // Reload the Organisation data
-            axios.get("/api/organisations").then((res) => setOrganisationData(res.data));
+            axios.get("https://tyjaedon.me/api/organisations").then((res) => setOrganisationData(res.data));
             setEditingEvent(null); // Clear editing state after updating
             setNewEvent({ name: "", usage_of_funds: "", amount_raised: 0, summary: "", event_image: null });
         })
@@ -158,7 +158,7 @@ const handleUpdateEvent = () => {
       };
 
       const handleUpdateRecord = (id, updatedData) => {
-        axios.put(`/api/cmi/${id}`, updatedData)
+        axios.put(`https://tyjaedon.me/api/cmi/${id}`, updatedData)
           .then(() => {
             // Refresh data after update
             setCmiData((prevData) =>
@@ -179,7 +179,7 @@ const handleUpdateEvent = () => {
         setLoading(true);
         try {
           const response = await axios.post(
-            "/api/admin/update-donations",
+            "https://tyjaedon.me/api/admin/update-donations",
             {},
             {
               headers: {
@@ -189,7 +189,7 @@ const handleUpdateEvent = () => {
           );
           
           alert(response.data.message); // Show success message
-          axios.get("/api/cmi")
+          axios.get("https://tyjaedon.me/api/cmi")
           .then((response) => {
               setCmiData(response.data);
           })

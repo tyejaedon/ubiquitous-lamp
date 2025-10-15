@@ -10,7 +10,7 @@ const DonationProgress = () => {
   useEffect(() => {
     const fetchDonationData = async () => {
       try {
-        const response = await axios.get("/api/donation-progress");
+        const response = await axios.get("https://tyjaedon.me/api/donation-progress");
         const { donation_total, goal } = response.data;
 
         setDonatedAmount(donation_total);

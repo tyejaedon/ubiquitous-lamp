@@ -8,7 +8,7 @@ const AdminDonations = () => {
   useEffect(() => {
     const fetchDonations = async () => {
       try {
-        const response = await axios.get("/api/admin/donations", {
+        const response = await axios.get("https://tyjaedon.me/api/admin/donations", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
           }
@@ -25,7 +25,7 @@ const AdminDonations = () => {
   }, []);
 
   const updateStatus = (id, newStatus) => {
-    fetch("/api/admin/donations", {
+    fetch("https://tyjaedon.me/api/admin/donations", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

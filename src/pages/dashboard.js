@@ -39,7 +39,7 @@ const Dashboard = () => {
   };
 
   const fetchprofile = () => {
-    fetch("/api/profile", {
+    fetch("https://tyjaedon.me/api/profile", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -91,7 +91,7 @@ const Dashboard = () => {
     const fetchDonations = () =>{
       setToken(localStorage.getItem("token"));
       console.log("Token:", token);
-    fetch("/api/donations", {
+    fetch("https://tyjaedon.me/api/donations", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -159,7 +159,7 @@ const Dashboard = () => {
 
   // If a profile photo is present, append it to FormData
  
-    fetch("/api/profile/update", {
+    fetch("https://tyjaedon.me/api/profile/update", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${token}`,

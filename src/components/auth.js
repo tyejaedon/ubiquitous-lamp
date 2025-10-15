@@ -15,7 +15,7 @@ const TokenChecker = () => {
       }
 
       try {
-        const response = await axios.get("/api/auth/check-token", {
+        const response = await axios.get("https://tyjaedon.me/api/auth/check-token", {
           headers: { Authorization: `Bearer ${token}` }
         });
 

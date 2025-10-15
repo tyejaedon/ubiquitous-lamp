@@ -13,7 +13,7 @@ const DonationModal = ({ event, onClose }) => {
     
     useEffect(() => {
       // Fetch logged-in user data if available
-      axios.get("/api/user",      
+      axios.get("https://tyjaedon.me/api/user",      
         {headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -43,7 +43,7 @@ const DonationModal = ({ event, onClose }) => {
           payload.phone = phone; // Use entered phone number
         }
     
-        const response = await fetch("/api/donate", {
+        const response = await fetch("https://tyjaedon.me/api/donate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),

@@ -12,7 +12,7 @@ const Login = () => {
     setError(""); // Reset error message
 
     try {
-      const response = await fetch("/api/login", {
+      const response = await fetch("https://tyjaedon.me/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

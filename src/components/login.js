@@ -35,7 +35,7 @@ useEffect(() => {
     setError(""); // Reset error state
 
     try {
-      const response = await fetch("/api/signup", {
+      const response = await fetch("https://tyjaedon.me/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

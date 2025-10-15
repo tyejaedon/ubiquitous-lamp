@@ -14,7 +14,7 @@ const EventsPage = (modalstatus) => {
   
   useEffect(() => {
     // Fetch organisation data from the API
-    axios.get("http://localhost:5000/api/organisations")
+    axios.get("https://tyjaedon.me/api/organisations")
       .then((response) => {
         const organisationData = response.data;  // assuming the API returns an array of organisations
         console.log("Organisation data:", organisationData);
