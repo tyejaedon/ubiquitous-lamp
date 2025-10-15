@@ -351,7 +351,7 @@ app.post("/api/login", async (req, res) => {
 
             let profile = profileResults[0];
             if (profile.profile_image !==  null){
-              profile.profile_image = 'http://localhost:5000' + profile.profile_image;
+              profile.profile_image = 'https://tyjaedon.me' + profile.profile_image;
             }
            
 
@@ -761,7 +761,7 @@ SET donation_total = (
   
 
 
-// Serve static files from React build folder
+// Serve static files React build folder
 app.use(express.static(path.join(__dirname, "build")));
 
 // Catch-all route to serve index.html for React Rout

@@ -50,7 +50,7 @@ const EventsPage = (modalstatus) => {
           },
         ];
         organisationData.forEach((event, index) => {
-          event.org_photo = "http://localhost:5000/" + event.org_photo;  // Assuming the API returns the image path
+          event.org_photo = "https://tyjaedon.me" + event.org_photo;  // Assuming the API returns the image path
         });
     
         // Merge organisation data with the static events (you can customize this as needed)
