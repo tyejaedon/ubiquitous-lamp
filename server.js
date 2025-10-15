@@ -133,27 +133,35 @@ pool.query(sql, [id], (err, results) => {
 
 };
 const allowedOrigins = [
-  "http://localhost:5173",   // local development (Vite/React)
-  "https://tyjaedon.me",     // production frontend
-  "https://www.tyjaedon.me", // optional, in case you add a www version
+  "http://localhost:5173",       // local dev
+  "http://localhost:3000",
+  "http://localhost:5000",
+  "https://tyjaedon.me",         // live domain
+  "https://www.tyjaedon.me",     // www domain
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like Postman or curl)
+      // Allow requests with no origin (like Postman, curl, or server-to-server)
       if (!origin) return callback(null, true);
 
-      if (allowedOrigins.includes(origin)) {
+      // Match subdomains if needed (optional but helpful)
+      const isAllowed = allowedOrigins.some(o => origin.startsWith(o));
+
+      if (isAllowed) {
         callback(null, true);
       } else {
+        console.log("❌ CORS blocked:", origin);
         callback(new Error("CORS policy: Not allowed by server"));
       }
     },
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
+
 
 if (!process.env.JWT_SECRET) {
     console.error("❌ Missing JWT_SECRET in .env file");
