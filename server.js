@@ -190,9 +190,10 @@ pool.on("error", (err) => {
   });
 
 // ✅ Sample Route
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.send("CMI Donation API is Running 🚀");
 });
+
 
 const checkEmailExists = (email) => {
     return new Promise((resolve, reject) => {
@@ -749,6 +750,17 @@ SET donation_total = (
 });
 
   
+
+
+// Serve static files from React build folder
+app.use(express.static(path.join(__dirname, "build")));
+
+// Catch-all route to serve index.html for React Rout
+app.get(/.*/, (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
+
+
 
 // ✅ Start Server
 const PORT = process.env.PORT || 5000;
