@@ -147,8 +147,7 @@ app.use(
       if (!origin) return callback(null, true);
 
       // Match subdomains if needed (optional but helpful)
-      const isAllowed = allowedOrigins.some(o => origin.startsWith(o));
-
+      const isAllowed = allowedOrigins.includes(origin);
       if (isAllowed) {
         callback(null, true);
       } else {
@@ -762,9 +761,10 @@ SET donation_total = (
 
 
 // Serve static files React build folder
-app.use(express.static(path.join(__dirname, "build")));
+// Correctly serve the static files from the build output
+app.use(express.static(path.join(__dirname, 'build')));
 
-// Catch-all route to serve index.html for React Rout
+// Catch-all route to serve index.html for React Router
 app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
