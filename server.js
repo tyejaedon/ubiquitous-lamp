@@ -133,9 +133,9 @@ pool.query(sql, [id], (err, results) => {
 
 };
 const allowedOrigins = [
-  "http://localhost:5173",       // local dev
-  "http://localhost:3000",
-  "http://localhost:5000",
+  "https://localhost:5173",       // local dev
+  "https://localhost:3000",
+  "https://localhost:5000",
   "https://tyjaedon.me",         // live domain
   "https://www.tyjaedon.me",     // www domain
 ];
